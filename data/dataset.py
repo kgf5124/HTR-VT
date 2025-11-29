@@ -70,7 +70,8 @@ class myLoadDS(Dataset):
 
 def get_files(nfile, dpath):
     fnames = open(nfile, 'r').readlines()
-    fnames = [dpath + x.strip() for x in fnames]
+    fnames = [os.path.join(dpath, x.split('\t')[0].strip())
+    for x in fnames]
     return fnames
 
 
