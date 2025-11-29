@@ -70,9 +70,19 @@ class myLoadDS(Dataset):
 
 def get_files(nfile, dpath):
     fnames = open(nfile, 'r').readlines()
-    fnames = [os.path.join(dpath, x.split('\t')[0].strip())
-    for x in fnames]
-    return fnames
+
+    # FIX: split LN file on first TAB so label text is ignored
+    clean = []
+    for x in fnames:
+        parts = x.split('\t')
+        if len(parts) < 2:
+            # fallback: split on space (in case of odd formatting)
+            parts = x.split(' ', 1)
+        img_rel_path = parts[0].strip()
+        clean.append(os.path.join(dpath, img_rel_path))
+
+    return clean
+
 
 
 def npThum(img, max_w, max_h):
